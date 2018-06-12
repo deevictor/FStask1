@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form method = 'POST' action='.' id="message_form">{% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" value='Send' />
+
+  </form>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{# <script type="text/javascript" src="{{ STATIC_URL }}jquery-3.3.1.min.js"></script> #}
+
+<script type="text/javascript">
+  
+  $('#message_form').on('submit', function(event){
+    event.preventDefault();
+    // console.log($('#username').val())
+    // console.log($('#emailid').val())
+    // console.log($('#password2').val())
+    $.ajax({
+      type:'POST',
+      url: '{{ request.path }}',
+      dataType: 'json',
+      data: $('#message_form').serialize(),
+      success:function(data){
+        if (data.status == 'success') {
+          alert('the message is sent')
+          window.location = data.url
+          } else {
+              alert('the message was not sent')
+          }
+        }
+    });
+  });
+</script>
+
+{% endblock %}

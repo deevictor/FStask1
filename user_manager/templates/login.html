@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  <h2>Login</h2>
+  <form method="post" id="login_form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+{# <script type="text/javascript" src="{{ STATIC_URL }}jquery-3.3.1.min.js"></script> #}
+
+<script type="text/javascript">
+  
+  $('#login_form').on('submit', function(event){
+    event.preventDefault();
+    console.log("form submitted!")
+    // console.log($('#username').val())
+    // console.log($('#emailid').val())
+    // console.log($('#password2').val())
+    $.ajax({
+      type:'POST',
+      url:'{% url "login" %}',
+      dataType: 'json',
+      data: $('#login_form').serialize(),
+      success:function(data){
+        if (data.status == 'success') {
+          window.location = data.url
+          } else {
+            alert('wrong login or password, try again.')
+          }
+        }
+    });
+  });
+</script>
+
+{% endblock %}

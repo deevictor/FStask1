@@ -1,0 +1,32 @@
+{# {% load staticfiles %} #}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FStask1</title>
+  </head>
+  <body>
+    <header>
+      <h1>My Site</h1>
+      {% if user.is_authenticated %}
+        <h2>Welcome, {{ user.username }}!</h2>
+        <a href="{% url 'logout' %}">logout</a>
+        <br />
+        <br />
+        <br />
+        <a href="{% url 'contact_admins' %}" class="top-menu-small">contact administrator</a>
+        &nbsp;
+        <a href="{% url 'contact' %}" class="top-menu-small">send message</a>
+      {% else %}
+        <h2>Welcome new user!</h2>
+        <a href="{% url 'login' %}">login</a>
+        &nbsp;
+        <a href="{% url 'signup' %}">signup</a>
+      {% endif %}
+      <hr>
+    </header>
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+  </body>
+</html>

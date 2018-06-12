@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post" id='new_user_form'>
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{field.help_text|safe}}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Sign up</button>
+  </form>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+  
+  $('#new_user_form').on('submit', function(event){
+    event.preventDefault();
+    console.log("form submitted!")
+    // console.log($('#username').val())
+    // console.log($('#emailid').val())
+    // console.log($('#password2').val())
+    $.ajax({
+      type:'POST',
+      url:'{% url "signup" %}',
+      dataType: 'json',
+      data: $('#new_user_form').serialize(),
+      success:function(data){
+        if (data.status == 'success') {
+          alert('You are registered and logged in!')
+          window.location = data.url
+        }
+      }
+    });
+  });
+
+</script>
+
+{% endblock %}

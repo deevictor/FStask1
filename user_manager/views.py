@@ -25,7 +25,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username = username, password = raw_password)
             login(request, user)
-            messages.info(request, "thanks for registering. Please login to continue.")
+            # messages.info(request, "thanks for registering. Please login to continue.")
             return JsonResponse({'status': 'success', 'url': '/'})
 
     else:
